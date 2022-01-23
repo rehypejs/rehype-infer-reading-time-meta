@@ -1,6 +1,6 @@
 {
   "name": "rehype-infer-reading-time-meta",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "rehype plugin to infer reading time as file metadata from the document",
   "license": "MIT",
   "keywords": [
