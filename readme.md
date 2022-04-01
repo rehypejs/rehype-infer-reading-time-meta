@@ -55,17 +55,17 @@ In Node.js (version 12.20+, 14.14+, or 16.0+), install with [npm][]:
 npm install rehype-infer-reading-time-meta
 ```
 
-In Deno with [Skypack][]:
+In Deno with [`esm.sh`][esmsh]:
 
 ```js
-import rehypeInferReadingTimeMeta from 'https://cdn.skypack.dev/rehype-infer-reading-time-meta@1?dts'
+import rehypeInferReadingTimeMeta from 'https://esm.sh/rehype-infer-reading-time-meta@1'
 ```
 
-In browsers with [Skypack][]:
+In browsers with [`esm.sh`][esmsh]:
 
 ```html
 <script type="module">
-  import rehypeInferReadingTimeMeta from 'https://cdn.skypack.dev/rehype-infer-reading-time-meta@1?min'
+  import rehypeInferReadingTimeMeta from 'https://esm.sh/rehype-infer-reading-time-meta@1?bundle'
 </script>
 ```
 
@@ -225,7 +225,7 @@ abide by its terms.
 
 [npm]: https://docs.npmjs.com/cli/install
 
-[skypack]: https://www.skypack.dev
+[esmsh]: https://esm.sh
 
 [health]: https://github.com/rehypejs/.github
 
