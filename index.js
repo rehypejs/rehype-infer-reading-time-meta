@@ -1,6 +1,7 @@
 /**
+ * @typedef {import('./complex-types.js')} DoNotTouchThisAsItIncludesAugmentation
+ *
  * @typedef {import('hast').Root} Root
- * @typedef {import('hast').Element} Element
  *
  * @typedef Options
  *   Configuration.
@@ -48,9 +49,7 @@ export default function rehypeInferReadingTimeMeta(options = {}) {
       const matter = /** @type {Record<string, unknown>} */ (
         file.data.matter || {}
       )
-      const meta = /** @type {Record<string, unknown>} */ (
-        file.data.meta || (file.data.meta = {})
-      )
+      const meta = file.data.meta || (file.data.meta = {})
 
       if (!matter.readingTime && !meta.readingTime) {
         meta.readingTime = time

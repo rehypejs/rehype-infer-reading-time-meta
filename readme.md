@@ -49,7 +49,7 @@ is shown on Slack or certain other services.
 ## Install
 
 This package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c).
-In Node.js (version 12.20+, 14.14+, or 16.0+), install with [npm][]:
+In Node.js (version 12.20+, 14.14+, 16.0+, or 18.0+), install with [npm][]:
 
 ```sh
 npm install rehype-infer-reading-time-meta
@@ -82,25 +82,21 @@ import rehypeMeta from 'rehype-meta'
 import rehypeFormat from 'rehype-format'
 import rehypeStringify from 'rehype-stringify'
 
-main()
+const file = await unified()
+  .use(rehypeParse, {fragment: true})
+  .use(rehypeInferReadingTimeMeta)
+  .use(rehypeDocument)
+  .use(rehypeMeta, {twitter: true})
+  .use(rehypeFormat)
+  .use(rehypeStringify)
+  .process(
+    '<h1>Build</h1><p><strong>We provide the building blocks</strong>: from tiny, focussed, modular utilities to plugins that combine them to perform bigger tasks. And much, much more. You can build on unified, mixing and matching building blocks together, to make all kinds of interesting new things.</p>'
+  )
 
-async function main() {
-  const file = await unified()
-    .use(rehypeParse, {fragment: true})
-    .use(rehypeInferReadingTimeMeta)
-    .use(rehypeDocument)
-    .use(rehypeMeta, {twitter: true})
-    .use(rehypeFormat)
-    .use(rehypeStringify)
-    .process(
-      '<h1>Build</h1><p><strong>We provide the building blocks</strong>: from tiny, focussed, modular utilities to plugins that combine them to perform bigger tasks. And much, much more. You can build on unified, mixing and matching building blocks together, to make all kinds of interesting new things.</p>'
-    )
-
-  console.log(String(file))
-}
+console.log(String(file))
 ```
 
-Now running `node example.js` yields:
+…now running `node example.js` yields:
 
 ```html
 <!doctype html>
@@ -152,13 +148,29 @@ other random stuff, by focussing on one element.
 ## Types
 
 This package is fully typed with [TypeScript][].
-The extra type `Options` is exported.
+The additional type `Options` is exported.
+
+It also registers the `file.data.meta` fields with `vfile`.
+If you’re working with the file, make sure to import this plugin somewhere in
+your types, as that registers the new fields on the file.
+
+```js
+/**
+ * @typedef {import('rehype-infer-title-meta')}
+ */
+
+import {VFile} from 'vfile'
+
+const file = new VFile()
+
+console.log(file.data.meta.readingTime) //=> TS now knows that this is a `(number | [number, number])?`.
+```
 
 ## Compatibility
 
 Projects maintained by the unified collective are compatible with all maintained
 versions of Node.js.
-As of now, that is Node.js 12.20+, 14.14+, and 16.0+.
+As of now, that is Node.js 12.20+, 14.14+, 16.0+, and 18.0+.
 Our projects sometimes work with older versions, but this is not guaranteed.
 
 This plugin works with `rehype-parse` version 3+, `rehype-stringify` version 3+,
