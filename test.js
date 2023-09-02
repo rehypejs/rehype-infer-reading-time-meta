@@ -8,6 +8,12 @@ import rehypeInferReadingTimeMeta from './index.js'
 const buf = fs.readFileSync('fixture.html')
 
 test('rehypeInferReadingTimeMeta', async function (t) {
+  await t.test('should expose the public api', async function () {
+    assert.deepEqual(Object.keys(await import('./index.js')).sort(), [
+      'default'
+    ])
+  })
+
   await t.test('should estimate reading time', async function () {
     const file = await rehype().use(rehypeInferReadingTimeMeta).process(buf)
 
