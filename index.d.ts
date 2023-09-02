@@ -1,3 +1,6 @@
+export type {Options} from './lib/index.js'
+export {default} from './lib/index.js'
+
 interface InferReadingTimeMeta {
   /**
    * Reading time of the document in minutes (optional); if two numbers are
@@ -22,5 +25,3 @@ declare module 'vfile' {
     meta: DataMapMeta
   }
 }
-
-export {}
