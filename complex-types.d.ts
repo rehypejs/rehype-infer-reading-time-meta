@@ -1,15 +1,26 @@
-// Need a random export to turn this into a module?
-export type Whatever = unknown
+interface InferReadingTimeMeta {
+  /**
+   * Reading time of the document in minutes (optional); if two numbers are
+   * given, they represent a range of two estimates.
+   *
+   * Inferred by `rehype-infer-reading-time-meta` from HTML.
+   * Used by `rehype-meta`.
+   */
+  readingTime?:
+    | [lowEstimate: number, highEstimate: number]
+    | [estimate: number]
+    | number
+    | null
+    | undefined
+}
 
+// Add custom data supported when `rehype-infer-reading-time-meta` is added.
 declare module 'vfile' {
+  interface DataMapMeta extends InferReadingTimeMeta {}
+
   interface DataMap {
-    meta: {
-      /**
-       * Estimated reading time of a document.
-       *
-       * Populated by `rehype-infer-reading-time-meta` from the HTML.
-       */
-      readingTime?: number | [number, number]
-    }
+    meta: DataMapMeta
   }
 }
+
+export {}
