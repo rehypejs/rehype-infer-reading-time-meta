@@ -2,16 +2,17 @@ import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import test from 'node:test'
 import {rehype} from 'rehype'
+import rehypeInferReadingTimeMeta from 'rehype-infer-reading-time-meta'
 import rehypeMeta from 'rehype-meta'
-import rehypeInferReadingTimeMeta from '../index.js'
 
 const buf = fs.readFileSync(new URL('fixture.html', import.meta.url))
 
 test('rehypeInferReadingTimeMeta', async function (t) {
   await t.test('should expose the public api', async function () {
-    assert.deepEqual(Object.keys(await import('../index.js')).sort(), [
-      'default'
-    ])
+    assert.deepEqual(
+      Object.keys(await import('rehype-infer-reading-time-meta')).sort(),
+      ['default']
+    )
   })
 
   await t.test('should estimate reading time', async function () {
