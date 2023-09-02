@@ -17,7 +17,8 @@
 *   [Install](#install)
 *   [Use](#use)
 *   [API](#api)
-    *   [`unified().use(rehypeInferReadingTimeMeta, options?)`](#unifieduserehypeinferreadingtimemeta-options)
+    *   [`unified().use(rehypeInferReadingTimeMeta[, options])`](#unifieduserehypeinferreadingtimemeta-options)
+    *   [`Options`](#options)
 *   [Types](#types)
 *   [Compatibility](#compatibility)
 *   [Security](#security)
@@ -48,8 +49,8 @@ is shown on Slack or certain other services.
 
 ## Install
 
-This package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c).
-In Node.js (version 12.20+, 14.14+, 16.0+, or 18.0+), install with [npm][]:
+This package is [ESM only][esm].
+In Node.js (version 16+), install with [npm][]:
 
 ```sh
 npm install rehype-infer-reading-time-meta
@@ -71,16 +72,16 @@ In browsers with [`esm.sh`][esmsh]:
 
 ## Use
 
-Say our module `example.js` looks as follows:
+Say our module `example.js` contains:
 
 ```js
-import {unified} from 'unified'
-import rehypeParse from 'rehype-parse'
-import rehypeInferReadingTimeMeta from 'rehype-infer-reading-time-meta'
 import rehypeDocument from 'rehype-document'
-import rehypeMeta from 'rehype-meta'
 import rehypeFormat from 'rehype-format'
+import rehypeInferReadingTimeMeta from 'rehype-infer-reading-time-meta'
+import rehypeMeta from 'rehype-meta'
+import rehypeParse from 'rehype-parse'
 import rehypeStringify from 'rehype-stringify'
+import {unified} from 'unified'
 
 const file = await unified()
   .use(rehypeParse, {fragment: true})
@@ -96,14 +97,14 @@ const file = await unified()
 console.log(String(file))
 ```
 
-…now running `node example.js` yields:
+…then running `node example.js` yields:
 
 ```html
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:label1" content="Reading time">
     <meta name="twitter:data1" content="1 minute">
@@ -118,60 +119,72 @@ console.log(String(file))
 ## API
 
 This package exports no identifiers.
-The default export is `rehypeInferReadingTimeMeta`.
+The default export is
+[`rehypeInferReadingTimeMeta`][api-rehype-infer-reading-time].
 
-### `unified().use(rehypeInferReadingTimeMeta, options?)`
+### `unified().use(rehypeInferReadingTimeMeta[, options])`
 
 Infer the estimated reading time from a document as file metadata.
+
 The reading time is inferred not just on words per minute, but also takes
 readability into account.
 The result is stored on `file.data.meta.readingTime`.
 
-##### `options`
+###### Parameters
 
-Configuration (optional).
+*   `options` ([`Options`][api-options], optional)
+    — configuration
 
-##### `options.age`
+###### Returns
 
-Target age group (`number` or `[number, number]`, default: `[16, 18]`).
-This is the age your target audience was still in school.
-Set it to 18 if you expect all readers to have finished high school, 21 if you
-expect your readers to all be college graduates, etc.
-Can be two numbers in an array to get two estimates.
+Transform ([`Transformer`][unified-transformer]).
 
-##### `options.mainSelector`
+### `Options`
 
-CSS selector to body of content (`string`, optional, example: `'main'`).
-Useful to exclude other things, such as the head, ads, styles, scripts, and
-other random stuff, by focussing on one element.
+Configuration (TypeScript type).
+
+###### Fields
+
+*   `age` (`[number, number]` or `number`, default: `[16, 18]`)
+    — target age group; this is the age your target audience was still in
+    school; so, set it to `18` if you expect all readers to have finished high
+    school, `21` if you expect your readers to be college graduates, etc; can
+    be two numbers in an array to get two estimates
+*   `mainSelector` (`string`, optional, example: `'main'`)
+    — CSS selector to body of content; useful to exclude other things, such as
+    the head, ads, styles, scripts, and other random stuff, by focussing all
+    strategies in one element
 
 ## Types
 
 This package is fully typed with [TypeScript][].
-The additional type `Options` is exported.
+It exports the additional type [`Options`][api-options].
 
-It also registers the `file.data.meta` fields with `vfile`.
+It also registers `file.data.meta` with `vfile`.
 If you’re working with the file, make sure to import this plugin somewhere in
 your types, as that registers the new fields on the file.
 
 ```js
 /**
- * @typedef {import('rehype-infer-title-meta')}
+ * @typedef {import('rehype-infer-reading-time-meta')}
  */
 
 import {VFile} from 'vfile'
 
 const file = new VFile()
 
-console.log(file.data.meta.readingTime) //=> TS now knows that this is a `(number | [number, number])?`.
+console.log(file.data.meta?.readingTime) //=> TS now knows that this is a `([number, number] | number)?`.
 ```
 
 ## Compatibility
 
-Projects maintained by the unified collective are compatible with all maintained
+Projects maintained by the unified collective are compatible with maintained
 versions of Node.js.
-As of now, that is Node.js 12.20+, 14.14+, 16.0+, and 18.0+.
-Our projects sometimes work with older versions, but this is not guaranteed.
+
+When we cut a new major release, we drop support for unmaintained versions of
+Node.
+This means we try to keep the current release line,
+`rehype-infer-reading-time-meta@^1`, compatible with Node.js 12.
 
 This plugin works with `rehype-parse` version 3+, `rehype-stringify` version 3+,
 `rehype` version 4+, and `unified` version 6+.
@@ -221,9 +234,9 @@ abide by its terms.
 
 [downloads]: https://www.npmjs.com/package/rehype-infer-reading-time-meta
 
-[size-badge]: https://img.shields.io/bundlephobia/minzip/rehype-infer-reading-time-meta.svg
+[size-badge]: https://img.shields.io/bundlejs/size/rehype-infer-reading-time-meta
 
-[size]: https://bundlephobia.com/result?p=rehype-infer-reading-time-meta
+[size]: https://bundlejs.com/?q=rehype-infer-reading-time-meta
 
 [sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
 
@@ -236,6 +249,8 @@ abide by its terms.
 [chat]: https://github.com/rehypejs/rehype/discussions
 
 [npm]: https://docs.npmjs.com/cli/install
+
+[esm]: https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
 
 [esmsh]: https://esm.sh
 
@@ -251,10 +266,16 @@ abide by its terms.
 
 [author]: https://wooorm.com
 
+[rehype]: https://github.com/rehypejs/rehype
+
+[rehype-meta]: https://github.com/rehypejs/rehype-meta
+
 [typescript]: https://www.typescriptlang.org
 
 [unified]: https://github.com/unifiedjs/unified
 
-[rehype]: https://github.com/rehypejs/rehype
+[unified-transformer]: https://github.com/unifiedjs/unified#transformer
 
-[rehype-meta]: https://github.com/rehypejs/rehype-meta
+[api-rehype-infer-reading-time]: #unifieduserehypeinferreadingtimemeta-options
+
+[api-options]: #options
