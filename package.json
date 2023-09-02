@@ -60,7 +60,7 @@
     "format": "remark . --frail --output --quiet && prettier . --log-level warn --write && xo --fix",
     "prepack": "npm run build && npm run format",
     "test": "npm run build && npm run format && npm run test-coverage",
-    "test-api": "node --conditions development test.js",
+    "test-api": "node --conditions development test/index.js",
     "test-coverage": "c8 --100 --check-coverage --reporter lcov npm run test-api"
   },
   "prettier": {

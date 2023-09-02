@@ -3,13 +3,13 @@ import fs from 'node:fs'
 import test from 'node:test'
 import {rehype} from 'rehype'
 import rehypeMeta from 'rehype-meta'
-import rehypeInferReadingTimeMeta from './index.js'
+import rehypeInferReadingTimeMeta from '../index.js'
 
-const buf = fs.readFileSync('fixture.html')
+const buf = fs.readFileSync(new URL('fixture.html', import.meta.url))
 
 test('rehypeInferReadingTimeMeta', async function (t) {
   await t.test('should expose the public api', async function () {
-    assert.deepEqual(Object.keys(await import('./index.js')).sort(), [
+    assert.deepEqual(Object.keys(await import('../index.js')).sort(), [
       'default'
     ])
   })
