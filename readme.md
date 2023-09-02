@@ -59,14 +59,14 @@ npm install rehype-infer-reading-time-meta
 In Deno with [`esm.sh`][esmsh]:
 
 ```js
-import rehypeInferReadingTimeMeta from 'https://esm.sh/rehype-infer-reading-time-meta@1'
+import rehypeInferReadingTimeMeta from 'https://esm.sh/rehype-infer-reading-time-meta@2'
 ```
 
 In browsers with [`esm.sh`][esmsh]:
 
 ```html
 <script type="module">
-  import rehypeInferReadingTimeMeta from 'https://esm.sh/rehype-infer-reading-time-meta@1?bundle'
+  import rehypeInferReadingTimeMeta from 'https://esm.sh/rehype-infer-reading-time-meta@2?bundle'
 </script>
 ```
 
